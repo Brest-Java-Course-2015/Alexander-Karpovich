@@ -7,9 +7,9 @@
     <packaging>pom</packaging>
 
 
-    <!--<modules>
-        <module>arr-core</module>
-    </modules>-->
+    <modules>
+        <module>app-core</module>
+    </modules>
 
 
 
