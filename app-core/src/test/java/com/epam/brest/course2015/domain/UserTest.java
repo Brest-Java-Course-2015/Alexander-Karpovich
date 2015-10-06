@@ -3,6 +3,8 @@ package com.epam.brest.course2015.domain;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -20,5 +22,21 @@ public class UserTest {
 	public void testGetLogin() throws Exception {
 		user.setLogin("LOGIN");
 		assertEquals("LOGIN",user.getLogin());
+	}
+	@Test
+	public void testGetPassword() throws Exception{
+		user.setPassword("pass");
+		assertEquals("pass",user.getPassword());
+	}
+	@Test
+	public void testGetUserId()throws Exception{
+		user.setUserId(12);
+		assertEquals((Integer)12,user.getUserId());
+	}
+
+	@Test
+	public void testCreatedDate()throws Exception{
+		user.setCreatedDate(new Date(2015,2,3));
+		assertEquals(new Date(2015,2,3),user.getCreatedDate());
 	}
 }

@@ -8,6 +8,7 @@ public class User {
 	private String login;
 	private String password;
 	private Date createdDate;
+
 	public String getLogin() {
 		return login;
 	}
