@@ -4,6 +4,8 @@ import com.epam.brest.course2015.domain.User;
 
 import java.util.List;
 
-public class UserDao {
-	public List<User>;
+public interface UserDao {
+	public List<User> getAllUsers();
+
+	public User getUserById(Integer id);
 }
