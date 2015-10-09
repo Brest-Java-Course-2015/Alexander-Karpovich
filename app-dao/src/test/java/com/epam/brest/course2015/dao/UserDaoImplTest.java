@@ -23,11 +23,12 @@ public class UserDaoImplTest {
 	@org.junit.Test
 	public void testGetAllUsers() throws Exception {
 		List<User> users = userDao.getAllUsers();
-		//assertTrue(users.size() == 0);
+		assertTrue(users!=null);
 	}
 
 	@org.junit.Test
-	public void testGetUser() throws Exception {
-
+	public void testGetUserById() throws Exception {
+		User user=userDao.getUserById(1);
+		assertTrue(user.getUserId()==1);
 	}
 }
