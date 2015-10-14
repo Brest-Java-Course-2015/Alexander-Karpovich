@@ -8,6 +8,28 @@ public class User {
 	private String login;
 	private String password;
 	private Date createdDate;
+	private Date updatedDate;
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+
+
+	public User() {
+	}
+
+	public User(Integer userId, String login, String password, Date createdDate,Date updatedDate) {
+		this.userId = userId;
+		this.login = login;
+		this.password = password;
+		this.createdDate = createdDate;
+		this.updatedDate = updatedDate;
+	}
 
 	public String getLogin() {
 		return login;
@@ -39,5 +61,24 @@ public class User {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+
+	public static enum UserFields {
+		USER_ID("userId"),
+		LOGIN("login"),
+		PASSWORD("password"),
+		CREATED_DATE("createdDate"),
+		UPDATED_DATE("updatedDate");
+
+		private UserFields(String value) {
+			this.value = value;
+		}
+
+		private final String value;
+
+		public String getValue() {
+			return value;
+		}
 	}
 }

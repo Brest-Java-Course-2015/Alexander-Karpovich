@@ -1,6 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>app-dao</artifactId>
+    <name>${artifactId}</name>
     <packaging>jar</packaging>
     <parent>
         <groupId> com.epam.brest.course2015</groupId>
@@ -17,7 +18,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>app-core</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>app-dao-api</artifactId>
         </dependency>
 
         <dependency>

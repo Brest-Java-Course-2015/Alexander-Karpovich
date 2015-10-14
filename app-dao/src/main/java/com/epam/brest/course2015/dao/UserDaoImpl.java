@@ -1,17 +1,26 @@
 package com.epam.brest.course2015.dao;
 
 
-import com.epam.brest.course2015.domain.User;
 
+import static com.epam.brest.course2015.domain.User.*;
+import static com.epam.brest.course2015.domain.User.UserFields.*;
+import static com.epam.brest.course2015.domain.User.UserFields.USER_ID;
+
+import com.epam.brest.course2015.domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -21,42 +30,92 @@ public class UserDaoImpl implements UserDao{
 
 	private final Logger LOGGER = LogManager.getLogger();
 
-//	public static final String GET_ALL_USERS = "select * from user";
-//	public static final String GET_USER_BY_ID = "select * from user where userId = ?";
+	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
 	@Value("${user.selectAll}")
-	private String GET_ALL_USERS;
+	private String userSelect;
 
 	@Value("${user.selectById}")
-	private String GET_USER_BY_ID;
+	private String getUserSelectById;
+
+	@Value("${user.selectByLogin}")
+	private String getUserSelectByLogin;
+
+	@Value("${user.insertUser}")
+	private String insertUser;
+
+	@Value("${user.updateUser}")
+	private String updateUser;
+
+	@Value("${user.deleteUser}")
+	private String deleteUser;
 
 	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public UserDaoImpl(DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
+
+	public UserDaoImpl(DataSource dataSource){
+		jdbcTemplate=new JdbcTemplate(dataSource);
+		namedParameterJdbcTemplate=new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	//@Override
+//	@Override
 	public List<User> getAllUsers() {
-		return jdbcTemplate.query(GET_ALL_USERS, new UserRowMapper());
+		LOGGER.info("getAllUsers");
+		return jdbcTemplate.query(userSelect, new UserRowMapper());
 	}
 
 	//@Override
-	public User getUserById(Integer id) {
-		LOGGER.info("id: {}",id);
-		return jdbcTemplate.queryForObject(GET_USER_BY_ID, new Object[]{id}, new UserRowMapper());
+	public User getUserById(Integer userId) {
+		LOGGER.info("getUserById({})",userId);
+		return jdbcTemplate.queryForObject(getUserSelectById, new Object[]{userId}, new UserRowMapper());
 	}
-	private class UserRowMapper implements RowMapper<User> {
 
-		public static final String USER_ID = "userId";
-		public static final String LOGIN = "login";
+	public User getUserByLogin(String login){
+		LOGGER.info("getUserByLogin({})",login);
+		return jdbcTemplate.queryForObject(getUserSelectByLogin,new Object[]{login},new UserRowMapper());
+	}
+
+	public Integer addUser(User user){
+		LOGGER.info("addUser(user):{}",user.getLogin(),dateFormat.format(user.getUpdatedDate()));
+		KeyHolder keyHolder=new GeneratedKeyHolder();
+		namedParameterJdbcTemplate.update(insertUser,getParametersMap(user),keyHolder);
+		return keyHolder.getKey().intValue();
+	}
+
+	public void updateUser(User user){
+		LOGGER.info("updateUser(user): {}",user.getLogin());
+		jdbcTemplate.update(updateUser,new Object[]{user.getPassword(),user.getUpdatedDate(),user.getUserId()});
+	}
+
+	public void deleteUser(Integer userId){
+		LOGGER.info("deleteUser(): {}",userId);
+		jdbcTemplate.update(deleteUser,new Object[]{userId});
+	}
+
+
+
+	private MapSqlParameterSource getParametersMap(User user) {
+		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+		parameterSource.addValue(USER_ID.getValue(), user.getUserId());
+		parameterSource.addValue(LOGIN.getValue(), user.getLogin());
+		parameterSource.addValue(PASSWORD.getValue(), user.getPassword());
+		parameterSource.addValue(CREATED_DATE.getValue(), user.getCreatedDate());
+		parameterSource.addValue(UPDATED_DATE.getValue(),user.getUpdatedDate());
+		return parameterSource;
+	}
+
+
+	private class UserRowMapper implements RowMapper<User> {
 
 		//@Override
 		public User mapRow(ResultSet resultSet, int i) throws SQLException {
-			User user = new User();
-			user.setUserId(resultSet.getInt(USER_ID)); //Ctrl+Alt+C
-			user.setLogin(resultSet.getString(LOGIN));
-			user.setPassword(resultSet.getString("password"));
+
+			User user = new User(resultSet.getInt(USER_ID.getValue()),
+										resultSet.getString(LOGIN.getValue()),
+										resultSet.getString(PASSWORD.getValue()),
+					                    resultSet.getTimestamp(CREATED_DATE.getValue()),
+										resultSet.getTimestamp(UPDATED_DATE.getValue()));
 			return user;
 		}
 	}
