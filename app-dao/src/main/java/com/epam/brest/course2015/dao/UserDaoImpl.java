@@ -2,9 +2,7 @@ package com.epam.brest.course2015.dao;
 
 
 
-import static com.epam.brest.course2015.domain.User.*;
 import static com.epam.brest.course2015.domain.User.UserFields.*;
-import static com.epam.brest.course2015.domain.User.UserFields.USER_ID;
 
 import com.epam.brest.course2015.domain.User;
 import org.apache.logging.log4j.LogManager;
@@ -32,14 +30,14 @@ public class UserDaoImpl implements UserDao{
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-	@Value("${user.selectAll}")
+	@Value("${user.select}")
 	private String userSelect;
 
 	@Value("${user.selectById}")
 	private String getUserSelectById;
 
 	@Value("${user.selectByLogin}")
-	private String getUserSelectByLogin;
+	private String userSelectByLogin;
 
 	@Value("${user.insertUser}")
 	private String insertUser;
@@ -73,7 +71,7 @@ public class UserDaoImpl implements UserDao{
 
 	public User getUserByLogin(String login){
 		LOGGER.info("getUserByLogin({})",login);
-		return jdbcTemplate.queryForObject(getUserSelectByLogin,new Object[]{login},new UserRowMapper());
+		return jdbcTemplate.queryForObject(userSelectByLogin,new Object[]{login},new UserRowMapper());
 	}
 
 	public Integer addUser(User user){

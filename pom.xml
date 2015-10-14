@@ -11,6 +11,8 @@
         <module>app-core</module>
         <module>app-dao-api</module>
         <module>app-dao</module>
+        <module>app-service-api</module>
+        <module>app-service</module>
 
     </modules>
 
@@ -45,6 +47,16 @@
             <dependency>
                 <groupId>com.epam.brest.course2015</groupId>
                 <artifactId>app-dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>app-service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>app-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -223,7 +235,7 @@
         </plugins>
     </build>
 
-    <reporting>
+   <reporting>
         <excludeDefaults>true</excludeDefaults>
         <outputDirectory>${project.build.directory}/site</outputDirectory>
         <plugins>

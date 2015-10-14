@@ -65,7 +65,7 @@ public class User {
 
 
 	public static enum UserFields {
-		USER_ID("userId"),
+		USER_ID("userid"),
 		LOGIN("login"),
 		PASSWORD("password"),
 		CREATED_DATE("createdDate"),
