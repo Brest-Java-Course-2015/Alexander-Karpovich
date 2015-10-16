@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao{
 
 	private final Logger LOGGER = LogManager.getLogger();
 
-	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
 
 	@Value("${user.select}")
 	private String userSelect;
@@ -75,7 +75,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	public Integer addUser(User user){
-		LOGGER.info("addUser(user):{}",user.getLogin(),dateFormat.format(user.getUpdatedDate()));
+		LOGGER.debug("addUser(user):login = {}",user.getLogin(),user.getLogin());
 		KeyHolder keyHolder=new GeneratedKeyHolder();
 		namedParameterJdbcTemplate.update(insertUser,getParametersMap(user),keyHolder);
 		return keyHolder.getKey().intValue();
