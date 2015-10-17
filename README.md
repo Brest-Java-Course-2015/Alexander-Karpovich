@@ -1,4 +1,10 @@
-usermanagment
-# mvn clean install
-# mvn site
-# mvn site:stage
+# Alexander-Karpovich
+- mvn clean install
+- mvn site
+- mvn site:stage
+
+Coverage Report: mvn cobertura:cobertura
+
+Start rest app:
+   cd app-rest
+   mvn jetty:run
