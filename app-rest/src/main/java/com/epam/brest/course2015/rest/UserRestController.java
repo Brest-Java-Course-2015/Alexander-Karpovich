@@ -23,9 +23,15 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/user/{login}/{password}", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody Integer addUser(@PathVariable(value = "login") String login,
                                          @PathVariable(value = "password") String password) {
-        return userService.addUser(new User(login, password));
+	    try {
+		    return userService.addUser(new User(login, password));
+	    }catch (IllegalArgumentException exc){
+		    return -1;
+	    }
+
     }
 
     @RequestMapping(value = "/user/{id}/{password}", method = RequestMethod.PUT)
@@ -33,6 +39,12 @@ public class UserRestController {
     public void updateUser(@PathVariable(value = "id") Integer id,
                                          @PathVariable(value = "password") String password) {
         userService.updateUser(new User(id, password));
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void deleteUser(@PathVariable(value = "id") Integer id){
+        userService.deleteUser(id);
     }
 
 }
