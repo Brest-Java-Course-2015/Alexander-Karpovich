@@ -39,6 +39,9 @@ public class UserDaoImpl implements UserDao{
 	@Value("${user.selectByLogin}")
 	private String userSelectByLogin;
 
+	@Value("${user.countUsers}")
+	private String countUser;
+
 	@Value("${user.insertUser}")
 	private String insertUser;
 
@@ -59,19 +62,24 @@ public class UserDaoImpl implements UserDao{
 
 //	@Override
 	public List<User> getAllUsers() {
-		LOGGER.info("getAllUsers");
+		LOGGER.debug("getAllUsers");
 		return jdbcTemplate.query(userSelect, new UserRowMapper());
 	}
 
 	//@Override
 	public User getUserById(Integer userId) {
-		LOGGER.info("getUserById({})",userId);
+		LOGGER.debug("getUserById({})",userId);
 		return jdbcTemplate.queryForObject(getUserSelectById, new Object[]{userId}, new UserRowMapper());
 	}
 
 	public User getUserByLogin(String login){
-		LOGGER.info("getUserByLogin({})",login);
+		LOGGER.debug("getUserByLogin({})",login);
 		return jdbcTemplate.queryForObject(userSelectByLogin,new Object[]{login},new UserRowMapper());
+	}
+
+	public Integer getCountUsers(String login){
+		LOGGER.debug("getCountUsers(): login={}",login);
+		return jdbcTemplate.queryForObject(countUser,new Object[]{login},Integer.class);
 	}
 
 	public Integer addUser(User user){
@@ -82,12 +90,12 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	public void updateUser(User user){
-		LOGGER.info("updateUser(user): {}",user.getLogin());
+		LOGGER.debug("updateUser(user):{} {}",user.getUserId(), user.getLogin());
 		jdbcTemplate.update(updateUser,new Object[]{user.getPassword(),user.getUpdatedDate(),user.getUserId()});
 	}
 
 	public void deleteUser(Integer userId){
-		LOGGER.info("deleteUser(): {}",userId);
+		LOGGER.debug("deleteUser(): {}",userId);
 		jdbcTemplate.update(deleteUser,new Object[]{userId});
 	}
 
