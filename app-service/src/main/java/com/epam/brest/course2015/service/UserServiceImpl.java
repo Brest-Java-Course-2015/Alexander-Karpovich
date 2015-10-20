@@ -37,12 +37,10 @@ public class UserServiceImpl implements UserService {
         Assert.isNull(user.getUserId(), "User Id should be null.");
         Assert.hasText(user.getLogin(), "User login should not be null.");
         Assert.hasText(user.getPassword(), "User password should not be null.");
-        try {
-            userDao.getUserByLogin(user.getLogin());
-        } catch (EmptyResultDataAccessException ex) {
-            return userDao.addUser(user);
+        if (userDao.getCountUsers(user.getLogin()) > 0) {
+            throw new IllegalArgumentException("User login should be unique.");
         }
-        throw new IllegalArgumentException("User login should be unique.");
+        return userDao.addUser(user);
     }
 
     @Override
