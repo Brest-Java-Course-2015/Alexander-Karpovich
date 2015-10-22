@@ -18,4 +18,6 @@ public interface UserService {
 
     public void deleteUser(Integer userId);
 
+    public void logUser(User user);
+
 }
