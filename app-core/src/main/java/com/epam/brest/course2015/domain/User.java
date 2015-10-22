@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class User {
 	private Integer userId;
@@ -43,6 +44,12 @@ public class User {
 		this.password = password;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
+	}
+
+	public User(Integer id, String login, String password) {
+		this.userId = id;
+		this.login = login;
+		this.password = password;
 	}
 
 	public String getLogin() {
@@ -94,5 +101,9 @@ public class User {
 		public String getValue() {
 			return value;
 		}
+	}
+
+	public boolean equals(Object obj){
+		return login.equals(((User)obj).getLogin());
 	}
 }
