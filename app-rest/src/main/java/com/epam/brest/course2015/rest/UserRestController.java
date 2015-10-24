@@ -1,6 +1,7 @@
 package com.epam.brest.course2015.rest;
 
 import com.epam.brest.course2015.domain.User;
+import com.epam.brest.course2015.dto.UserDto;
 import com.epam.brest.course2015.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,20 +23,15 @@ public class UserRestController {
        return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/user/{login}/{password}", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody Integer addUser(@PathVariable(value = "login") String login,
-                                         @PathVariable(value = "password") String password) {
-	    try {
-		    return userService.addUser(new User(login, password));
-	    }catch (IllegalArgumentException exc){
-		    return -1;
-	    }
+    public @ResponseBody Integer addUser(@RequestBody User user) {
+	    return userService.addUser(user);
 
     }
 
     @RequestMapping(value = "/user/{id}/{password}", method = RequestMethod.PUT)
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void updateUser(@PathVariable(value = "id") Integer id,
                                          @PathVariable(value = "password") String password) {
         userService.updateUser(new User(id, password));
@@ -46,5 +42,11 @@ public class UserRestController {
     public void deleteUser(@PathVariable(value = "id") Integer id){
         userService.deleteUser(id);
     }
+
+	@RequestMapping(value = "/userdto", method = RequestMethod.GET)
+	    public @ResponseBody
+	     UserDto getUserDto() {
+		return userService.getUserDto();
+	}
 
 }

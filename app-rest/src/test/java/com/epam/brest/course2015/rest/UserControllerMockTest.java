@@ -1,8 +1,17 @@
 package com.epam.brest.course2015.rest;
 
+import com.epam.brest.course2015.domain.User;
+import com.epam.brest.course2015.dto.UserDto;
+import com.epam.brest.course2015.rest.UserRestController;
+import com.epam.brest.course2015.rest.VersionController;
+import com.epam.brest.course2015.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,10 +20,16 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import java.util.Arrays;
+
+import static org.easymock.EasyMock.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
  * Created by juga on 23.10.15.
@@ -24,23 +39,83 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 public class UserControllerMockTest {
 
 	@Resource
-	private VersionController versionController;
+	private UserRestController userController;
 
 	private MockMvc mockMvc;
 
+	@Autowired
+	private UserService userService;
+
 	@Before
 	public void setUp() {
-		mockMvc = standaloneSetup(versionController)
+		mockMvc = standaloneSetup(userController)
 				          .setMessageConverters(new MappingJackson2HttpMessageConverter())
 				          .build();
 	}
 
-	@Test
-	public void getVersionTest() throws Exception {
-		mockMvc.perform(get("/version").accept(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk())
-		;
+	@After
+	public void tearDown() {
+		verify(userService);
+		reset(userService);
 	}
 
+	@Test
+	public void addUserTest() throws Exception {
+		expect(userService.addUser(anyObject(User.class))).andReturn(3);
+		replay(userService);
+
+		String user = new ObjectMapper().writeValueAsString(new User("login2", "password2"));
+
+		mockMvc.perform(
+				               post("/user")
+						               .accept(MediaType.APPLICATION_JSON)
+						               .contentType(MediaType.APPLICATION_JSON)
+						               .content(user)
+		).andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().string("3"));
+	}
+
+	@Test
+	public void getUsersTest() throws Exception {
+		expect(userService.getAllUsers()).andReturn(Arrays.<User>asList(new User("l", "p")));
+		replay(userService);
+
+		mockMvc.perform(
+				               get("/users")
+						               .accept(MediaType.APPLICATION_JSON)
+		).andDo(print())
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void updateUserTest() throws Exception {
+		userService.updateUser(anyObject(User.class));
+		expectLastCall();
+		replay(userService);
+
+		mockMvc.perform(
+				               put("/user/5/password5")
+						               .accept(MediaType.APPLICATION_JSON)
+		).andDo(print())
+				.andExpect(status().isAccepted())
+				.andExpect(content().string(""));
+	}
+
+	@Test
+	public void getUserDto() throws Exception {
+		UserDto dto = new UserDto();
+		dto.setUsers(Arrays.asList(new User("l1", "p1"), new User("l2", "p2")));
+		dto.setTotal(2);
+		expect(userService.getUserDto()).andReturn(dto);
+		replay(userService);
+
+		mockMvc.perform(
+				               get("/userdto")
+						               .accept(MediaType.APPLICATION_JSON)
+		).andDo(print())
+				.andExpect(status().isOk())
+		//.andExpect(content().string(""))
+		;
+	}
 }
