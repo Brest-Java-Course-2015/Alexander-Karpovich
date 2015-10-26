@@ -1,44 +1,52 @@
 package com.epam.brest.course2015.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
+import java.util.SimpleTimeZone;
 
+/**
+ * Created by juga on 5.10.15.
+ */
 public class User {
+
+	SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+
 	private Integer userId;
+
 	private String login;
+
 	@JsonIgnore
 	private String password;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private Date createdDate;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-	private Date updatedDate;
-
-	public Date getUpdatedDate() {
-		return updatedDate = new Date();
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-
+	private Date updatedDate = new Date();
 
 	public User() {
 	}
-	public User(String login, String password) {
-		this.login = login;
-		this.password = password;
-	}
+
 	public User(Integer userId, String password) {
 		this.userId = userId;
 		this.password = password;
 	}
 
-	public User(Integer userId, String login, String password, Date createdDate,Date updatedDate) {
+	public User(String login, String password) {
+		this.login = login;
+		this.password = password;
+	}
+
+	public User(Integer userId, String login, String password) {
+		this.userId = userId;
+		this.login = login;
+		this.password = password;
+	}
+
+	public User(Integer userId, String login, String password, Date createdDate, Date updatedDate) {
 		this.userId = userId;
 		this.login = login;
 		this.password = password;
@@ -46,10 +54,12 @@ public class User {
 		this.updatedDate = updatedDate;
 	}
 
-	public User(Integer id, String login, String password) {
-		this.userId = id;
-		this.login = login;
-		this.password = password;
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getLogin() {
@@ -76,23 +86,23 @@ public class User {
 		this.createdDate = createdDate;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
+	public enum UserFields {
 
-	public static enum UserFields {
-		USER_ID("userid"),
+		USER_ID("userId"),
 		LOGIN("login"),
 		PASSWORD("password"),
 		CREATED_DATE("createdDate"),
 		UPDATED_DATE("updatedDate");
 
-		private UserFields(String value) {
+		UserFields(String value) {
 			this.value = value;
 		}
 
@@ -101,9 +111,20 @@ public class User {
 		public String getValue() {
 			return value;
 		}
+
 	}
 
-	public boolean equals(Object obj){
-		return login.equals(((User)obj).getLogin());
+	public boolean equals(Object obj) {
+		return login.equals(((User) obj).getLogin());
+	}
+
+	@Override
+	public String toString() {
+		return String.format("User: {" +
+				                     "userId=" + userId +
+				                     ", login='" + login + '\'' +
+				                     ", createdDate=" + DATE_FORMAT.format(createdDate) +
+				                     ", updatedDate=" + DATE_FORMAT.format(updatedDate) +
+				                     '}');
 	}
 }
