@@ -1,5 +1,3 @@
-package com.epam.brest.course2015.rest;
-
 import com.epam.brest.course2015.rest.VersionController;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,26 +26,26 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @ContextConfiguration(locations = {"classpath*:test-spring-rest-mock.xml"})
 public class VersionControllerMockTest {
 
-	@Resource
-	private VersionController versionController;
+    @Resource
+    private VersionController versionController;
 
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setUp() {
-		mockMvc = standaloneSetup(versionController)
-				          .setMessageConverters(new MappingJackson2HttpMessageConverter())
-				          .build();
-	}
+    @Before
+    public void setUp() {
+        mockMvc = standaloneSetup(versionController)
+                .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .build();
+    }
 
-	@Test
-	public void getVersionTest() throws Exception {
-
-		mockMvc.perform(get("/version").accept(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().string("\"1.0\""))
-		;
-	}
+    @Test
+    public void getVersionTest() throws Exception {
+        mockMvc.perform(
+                get("/version")
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string("\"1.0\""));
+    }
 
 }

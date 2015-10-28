@@ -5,26 +5,27 @@ import com.epam.brest.course2015.domain.User;
 import java.util.List;
 
 /**
- * Created by ntrln on 23.10.15.
+ * Created by juga on 23.10.15.
  */
 public class UserDto {
 
-	private List<User> users;
-	private Integer total;
+    private List<User> users;
 
-	public List<User> getUsers() {
-		return users;
-	}
+    private int total;
 
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
+    public List<User> getUsers() {
+        return users;
+    }
 
-	public Integer getTotal() {
-		return total;
-	}
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
-	public void setTotal(Integer total) {
-		this.total = total;
-	}
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
 }

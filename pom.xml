@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.epam.brest.course2015</groupId>
-    <artifactId>usermanagment</artifactId>
+    <artifactId>usermanagement</artifactId>
     <name>Simple User Management</name>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -90,8 +90,8 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                    <version>${spring.version}</version>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -137,7 +137,12 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.1.0</version>
-                <scope>test</scope>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlets</artifactId>
+                <version>9.3.5.v20151012</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -145,6 +150,21 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <mainClass>com.epam.brest.course2015.client.Main</mainClass>
+                                <classpathPrefix>lib/</classpathPrefix>
+                                <!--<classpathLayoutType>repository</classpathLayoutType>-->
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>

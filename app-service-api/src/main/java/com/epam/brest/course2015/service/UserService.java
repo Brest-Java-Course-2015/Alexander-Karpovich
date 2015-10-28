@@ -5,6 +5,9 @@ import com.epam.brest.course2015.dto.UserDto;
 
 import java.util.List;
 
+/**
+ * Created by juga on 14.10.15.
+ */
 public interface UserService {
 
     public List<User> getAllUsers();
@@ -22,5 +25,4 @@ public interface UserService {
     public void logUser(User user);
 
     public UserDto getUserDto();
-
 }
