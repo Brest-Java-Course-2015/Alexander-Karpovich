@@ -1,4 +1,4 @@
-# Sample-User-Management
+# Karpovich Alexander
 - mvn clean install
 - mvn site
 - mvn site:stage

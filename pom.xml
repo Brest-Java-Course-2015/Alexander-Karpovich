@@ -3,7 +3,6 @@
 
     <groupId>com.epam.brest.course2015</groupId>
     <artifactId>usermanagement</artifactId>
-    <name>Simple User Management</name>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -138,11 +137,6 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.1.0</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-servlets</artifactId>
-                <version>9.3.5.v20151012</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
