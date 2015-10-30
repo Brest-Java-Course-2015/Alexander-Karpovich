@@ -4,10 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-/**
- * Created by juga on 5.10.15.
- */
 public class UserTest {
 
     private User user;

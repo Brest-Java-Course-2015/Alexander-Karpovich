@@ -4,9 +4,6 @@ import com.epam.brest.course2015.domain.User;
 
 import java.util.List;
 
-/**
- * Created by juga on 23.10.15.
- */
 public class UserDto {
 
     private List<User> users;
