@@ -10,6 +10,11 @@ public class Dish {
 
 	private Integer cost;
 
+	public Dish(String name, Integer cost){
+		this.name = name;
+		this.cost = cost;
+	}
+
 	public Integer getDishId() {
 		return dishId;
 	}
