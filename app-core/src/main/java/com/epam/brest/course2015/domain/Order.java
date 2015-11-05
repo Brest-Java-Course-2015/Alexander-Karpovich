@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ntrln on 04.11.15.
@@ -22,7 +23,7 @@ public class Order {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy hh:mm")
 	private Date deliveryDate;
 
-	private ArrayList<Dish> dishList;
+	private List<Dish> dishList;
 
 	public Integer getOrderId() {
 		return orderId;
@@ -56,11 +57,25 @@ public class Order {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public ArrayList<Dish> getDishList() {
+	public List<Dish> getDishList() {
 		return dishList;
 	}
 
-	public void setDishList(ArrayList<Dish> dishList) {
+	public void setDishList(List<Dish> dishList) {
 		this.dishList = dishList;
 	}
+
+	public Integer calculateCost(){
+		Integer result = 0;
+		for(Dish i: dishList){
+			result += i.getCost();
+		}
+		return result;
+	}
+
+	public Integer countDishes(){
+		return dishList.size();
+	}
+
+
 }
